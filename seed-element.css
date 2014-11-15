@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+body {
+	font-size: 16px;
+	font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+}
+
+#container {
+	padding: 10px;
+}
+
+.tab {
+	float: left;
+}
+
+.tab2 {
+	white-space: nowrap;
+}

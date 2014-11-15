@@ -1,0 +1,51 @@
+<link rel="import" href="../paper-fab/paper-fab.html">
+<link href="../core-icons/core-icons.html" rel="import">
+<link href="../paper-shadow/paper-shadow.html" rel="import">
+<polymer-element name="sw-status-element" attributes="notitle author">
+
+  <template>
+
+    <link rel="stylesheet" href="seed-element.css">
+    <paper-shadow z="1">
+      <div id="container">
+        <span class="tab2" hidden?="{{!enabled}}">
+          Controlled: {{controlledText}}
+        </span>
+        <span class="tab2" hidden?="{{!enabled}}">
+          State: {{stateText}}
+        </span>
+        <span class="tab2" hidden?="{{enabled}}">
+          Service Workers are not enabled in 
+        </span>
+        <paper-fab icon="refresh" mini></paper-fab>
+      </div>
+    </paper-shadow>
+    
+    <content></content>
+
+  </template>
+  <script src="../platform/platform.js"></script>
+
+  <script>
+
+    Polymer({
+      author: 'Daniel Murphy',
+      controlledText: "Unknown",
+      stateText: "Unkown",
+      enabled: false,
+
+      ready: function() {
+        this.refreshAll();
+      },
+
+      refreshAll: function() {
+        if (!navigator.serviceWorker) {
+          this.enabled = false;
+          return;
+        }
+        this.enabled = true;
+      }
+    });
+
+  </script>
+</polymer-element>
