@@ -1,23 +1,32 @@
 <link rel="import" href="../paper-fab/paper-fab.html">
 <link href="../core-icons/core-icons.html" rel="import">
 <link href="../paper-shadow/paper-shadow.html" rel="import">
-<polymer-element name="sw-status-element" attributes="notitle author">
+<polymer-element name="sw-status-element" attributes="author">
 
   <template>
 
-    <link rel="stylesheet" href="seed-element.css">
+    <link rel="stylesheet" href="sw-status-element.css">
     <paper-shadow z="1">
       <div id="container">
-        <span class="tab2" hidden?="{{!enabled}}">
-          Controlled: {{controlledText}}
-        </span>
-        <span class="tab2" hidden?="{{!enabled}}">
-          State: {{stateText}}
-        </span>
-        <span class="tab2" hidden?="{{enabled}}">
-          Service Workers are not enabled in 
-        </span>
+        <div id="title">
+          <h1>{{controlledText}}</h1>
+        </div>
+        <div id="tabs">
+          <span class="tab {{registrationStyle}}" hidden?="{{onlyErrorText}}">
+            <h1>Registration</h1>
+            <p>{{registrationText}}</p>
+          </span>
+          <span class="tab {{serviceWorkerStyle}}" hidden?="{{onlyErrorText}}">
+            <h1>ServiceWorker</h1>
+            <p>{{serviceWorkerText}}</p>
+          </span>
+          <span class="tab error" hidden?="{{(errorText == null)}}">
+            <h1>Error</h1>
+            <p>{{errorText}}</p>
+          </span>
+        </div>
         <paper-fab icon="refresh" mini></paper-fab>
+        <div style="clear: left" ></div>
       </div>
     </paper-shadow>
     
@@ -30,20 +39,63 @@
 
     Polymer({
       author: 'Daniel Murphy',
-      controlledText: "Unknown",
-      stateText: "Unkown",
-      enabled: false,
+      registrationText: "",
+      registrationStyle: "",
+      serviceWorkerText: "Unknown",
+      serviceWorkerStyle: "",
+      controlledText: "Not Controlled",
+
+      onlyErrorText: false,
+      errorText: 'Service Workers are not enabled in this browser.',
 
       ready: function() {
         this.refreshAll();
       },
 
+      getServiceWorkerDescription: function(worker) {
+        return "script: " + worker.scriptURL + "\nstate: " + worker.state;
+      },
+
       refreshAll: function() {
         if (!navigator.serviceWorker) {
-          this.enabled = false;
+          this.errorText = 'Service Workers are not enabled in this browser.';
+          this.onlyErrorText = true;
           return;
         }
-        this.enabled = true;
+        if (navigator.serviceWorker.current) {
+          this.controlledText = "Controlled";
+          _this.serviceWorkerText = getServiceWorkerDescription(worker);
+        }
+        var _this = this;
+        navigator.serviceWorker.getRegistration(window.location.pathname)
+            .then(function(registration) {
+              if (!registration) {
+                _this.errorText = 'No registration found for path "' + window.location.pathname + '".';
+                _this.onlyErrorText = true;
+                return;
+              }
+              _this.registrationText = "Scope: " + registration.scope;
+
+              var worker = null;
+              if (registration.waiting) {
+                worker = registration.waiting;
+                _this.registrationStyle = "waiting";
+              } else if (registration.installing) {
+                worker = registration.installing;
+                _this.registrationStyle = "installing";
+              } else if (registration.active) {
+                worker = registration.active;
+                _this.registrationStyle = "active";
+              } else {
+                _this.errorText = 'No registration found.';
+              }
+              if (worker != null) {
+                _this.serviceWorkerText = getServiceWorkerDescription(worker);
+              }
+            }, function(why) {
+                _this.errorText = 'Error getting registration for path "' + window.location.pathname + '": ' + why;
+                _this.onlyErrorText = false;
+            });
       }
     });
 

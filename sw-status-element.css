@@ -1,0 +1,58 @@
+:host {
+  display: block;
+}
+
+#container {
+	padding: 2px;
+	font-size: 12px;
+	font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+}
+
+#title h1 {
+	margin: 5px;
+	font-size: 14px;
+	padding-left: 5px;
+}
+
+.tab {
+	padding: 5px;
+	float: left;
+	margin: 5px;
+	margin-top: 0px;
+	max-width: 200px;
+	background-color: #00BCD4;
+}
+
+.tab p {
+	padding: 0px;
+	padding-left: 3px;
+	margin: 0px;
+}
+
+.tab h1 {
+	font-size: 14px;
+	margin: 0 0 5px 0;
+	border-bottom: 1px #FFEBEE solid;
+	padding-left: 5px;
+}
+
+.error {
+	background-color: #E53935;
+	color: #fff;
+}
+
+.waiting {
+	background-color: #FFC107;
+}
+
+.installing {
+	background-color: #FFEB3B;
+}
+
+.active {
+	background-color: #4CAF50;
+	color: #fff;
+}
+
+.normal {
+}
