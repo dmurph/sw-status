@@ -14,9 +14,16 @@
 	padding-left: 5px;
 }
 
+.goodText {
+	color: #1B5E20;
+}
+
+.badText {
+	color: #B71C1C;
+}
+
 .tab {
 	padding: 5px;
-	float: left;
 	margin: 5px;
 	margin-top: 0px;
 	max-width: 200px;
@@ -32,27 +39,28 @@
 .tab h1 {
 	font-size: 14px;
 	margin: 0 0 5px 0;
-	border-bottom: 1px #FFEBEE solid;
+	border-bottom: 1px solid;
 	padding-left: 5px;
 }
 
 .error {
 	background-color: #E53935;
+	border-color: #FFEBEE;
 	color: #fff;
 }
 
 .waiting {
 	background-color: #FFC107;
+	border-color: #FFFFFF;
 }
 
 .installing {
 	background-color: #FFEB3B;
+	border-color: #FFFFFF;
 }
 
 .active {
 	background-color: #4CAF50;
+	border-color: #FFFFFF;
 	color: #fff;
-}
-
-.normal {
 }
