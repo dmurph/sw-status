@@ -40,6 +40,7 @@
 	font-size: 14px;
 	margin: 0 0 5px 0;
 	border-bottom: 1px solid;
+	border-color: #FFFFFF;
 	padding-left: 5px;
 }
 
@@ -60,7 +61,6 @@
 }
 
 .active {
-	background-color: #4CAF50;
+	background-color: #66BB6A;
 	border-color: #FFFFFF;
-	color: #fff;
 }

@@ -13,22 +13,22 @@
         </div>
 
         <template repeat="{{registration in registrations}}">
-          <div class="tabs" hidden?="{{registration.onlyErrorText}}">
+          <div class="tabs">
             <span class="tab">
               <h1>Registration</h1>
               <p>{{registration.registrationText}}</p>
             </span>
-            <span class="tab installing" hidden?="{{registration.installingWorkerText != null}}">
+            <span class="tab installing" hidden?="{{registration.installingText == null}}">
               <h1>Installing Service Worker</h1>
-              <p>{{registration.installingWorkerText}}</p>
+              <p>{{registration.installingText}}</p>
             </span>
-            <span class="tab waiting" hidden?="{{registration.waitingWorkerText != null}}">
+            <span class="tab waiting" hidden?="{{registration.waitingText == null}}">
               <h1>Waiting Service Worker</h1>
-              <p>{{registration.waitingWorkerText}}</p>
+              <p>{{registration.waitingText}}</p>
             </span>
-            <span class="tab active" hidden?="{{registration.activeWorkerText != null}}">
+            <span class="tab active" hidden?="{{registration.activeText == null}}">
               <h1>Active Service Worker</h1>
-              <p>{{registration.activeWorkerText}}</p>
+              <p>{{registration.activeText}}</p>
             </span>
             <span class="tab error" hidden?="{{(registration.errorText == null)}}">
               <h1>Error</h1>
@@ -36,8 +36,8 @@
             </span>
           </div>
         </template>
-        <div class="tabs">
-          <span class="tab error" hidden?="{{(errorText == null)}}">
+        <div class="tabs" hidden?="{{(errorText == null)}}">
+          <span class="tab error">
             <h1>Error</h1>
             <p>{{errorText}}</p>
           </span>
@@ -89,24 +89,24 @@
               }
               var registrationObject = {
                 registrationText: null,
-                installingWorkerText: null,
-                waitingWorkerText: null,
-                activeWorkerText: null,
+                installingText: null,
+                waitingText: null,
+                activeText: null,
                 errorText: null,
               };
               registrationObject.registrationText = "Scope: " + registration.scope;
 
               var worker = null;
               if (registration.waiting) {
-                registrationObject.waitingWorkerText = _this.getServiceWorkerDescription(registration.waiting);
+                registrationObject.waitingText = _this.getServiceWorkerDescription(registration.waiting);
               } else if (registration.installing) {
-                registrationObject.installingWorkerText = _this.getServiceWorkerDescription(registration.installing);
+                registrationObject.installingText = _this.getServiceWorkerDescription(registration.installing);
               } else if (registration.active) {
-                registrationObject.activeWorkerText = _this.getServiceWorkerDescription(registration.active);
+                registrationObject.activeText = _this.getServiceWorkerDescription(registration.active);
               } else {
                 registrationObject.errorText = 'No registration found.';
               }
-              _this.registrations.push(registration);
+              _this.registrations.push(registrationObject);
             }, function(why) {
                 _this.errorText = 'Error getting registration for path "' + window.location.pathname + '": ' + why;
                 _this.onlyErrorText = false;
