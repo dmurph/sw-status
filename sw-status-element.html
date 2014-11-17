@@ -1,57 +1,53 @@
-<link rel="import" href="../paper-fab/paper-fab.html">
+<link href="../paper-fab/paper-fab.html" rel="import">
 <link href="../core-icons/core-icons.html" rel="import">
 <link href="../paper-shadow/paper-shadow.html" rel="import">
-<polymer-element name="sw-status-element" attributes="author">
 
+<polymer-element name="sw-status-element">
   <template>
-
     <link rel="stylesheet" href="sw-status-element.css">
     <paper-shadow z="1">
       <div id="container">
         <div id="title" class="{{titleStyle}}">
-          <h1>{{controlledText}}</h1>
+          <paper-fab id="refresh-button" icon="refresh" mini on-click="{{refreshClicked}}"></paper-fab>
+          <span>{{controlledText}}</span>
         </div>
-
         <template repeat="{{registration in registrations}}">
           <div class="tabs">
-            <span class="tab">
+            <paper-shadow class="tab">
               <h1>Registration</h1>
               <p>{{registration.registrationText}}</p>
-            </span>
-            <span class="tab installing" hidden?="{{registration.installingText == null}}">
+            </paper-shadow>
+            <paper-shadow class="tab installing" hidden?="{{registration.installingText == null}}">
               <h1>Installing Service Worker</h1>
               <p>{{registration.installingText}}</p>
-            </span>
-            <span class="tab waiting" hidden?="{{registration.waitingText == null}}">
+            </paper-shadow>
+            <paper-shadow class="tab waiting" hidden?="{{registration.waitingText == null}}">
               <h1>Waiting Service Worker</h1>
               <p>{{registration.waitingText}}</p>
-            </span>
-            <span class="tab active" hidden?="{{registration.activeText == null}}">
+            </paper-shadow>
+            <paper-shadow class="tab active" hidden?="{{registration.activeText == null}}">
               <h1>Active Service Worker</h1>
               <p>{{registration.activeText}}</p>
-            </span>
-            <span class="tab error" hidden?="{{(registration.errorText == null)}}">
+            </paper-shadow>
+            <paper-shadow class="tab error" hidden?="{{(registration.errorText == null)}}">
               <h1>Error</h1>
               <p>{{registration.errorText}}</p>
-            </span>
+            </paper-shadow>
           </div>
         </template>
         <div class="tabs" hidden?="{{(errorText == null)}}">
-          <span class="tab error">
+          <paper-shadow class="tab error">
             <h1>Error</h1>
             <p>{{errorText}}</p>
-          </span>
+          </paper-shadow>
         </div>
-        
-        <paper-fab icon="refresh" mini></paper-fab>
-        <div style="clear: left" ></div>
+        <div style="clear: left"></div>
       </div>
     </paper-shadow>
   </template>
   <script>
 
     Polymer({
-      author: 'Daniel Murphy',
       titleStyle: 'badText',
       controlledText: 'Not Controlled',
 
@@ -70,6 +66,8 @@
 
       refreshAll: function() {
         this.registrations = [];
+        this.errorText = null;
+        this.onlyErrorText = false;
         if (!navigator.serviceWorker) {
           this.errorText = 'Service Workers are not enabled in this browser.';
           this.onlyErrorText = true;
@@ -111,6 +109,10 @@
                 _this.errorText = 'Error getting registration for path "' + window.location.pathname + '": ' + why;
                 _this.onlyErrorText = false;
             });
+      },
+
+      refreshClicked: function(event, detail, sender) {
+        this.refreshAll();
       }
     });
 
