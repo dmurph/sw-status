@@ -1,5 +1,5 @@
-sw-status-element
+sw-status
 ============
 
 Documentation/demo:<br>
-https://dmurph.github.io/sw-status-element/components/sw-status-element/
+https://dmurph.github.io/sw-status/components/sw-status/
