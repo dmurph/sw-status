@@ -1,0 +1,27 @@
+{
+  "name": "sw-status",
+  "version": "0.2.1",
+  "authors": [
+    "Daniel Murphy <dmurph@google.com>"
+  ],
+  "description": "Displays status of ServiceWorkers on the page.",
+  "keywords": [
+    "service-worker",
+    "service-workers",
+    "serviceworker",
+    "serviceworkers"
+  ],
+  "main": "sw-status.html",
+  "license": "MIT",
+  "homepage": "https://github.com/dmurph/sw-status-element/",
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "core-icons": "Polymer/core-icons#^0.5.1",
+    "paper-fab": "Polymer/paper-fab#^0.5.1",
+    "paper-shadow": "Polymer/paper-shadow#^0.5.1"
+  }
+}

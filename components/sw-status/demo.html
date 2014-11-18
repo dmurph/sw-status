@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>sw-status Demo</title>
+  <link rel="import" href="sw-status.html">
+  <style>
+    #content {
+      margin: 0 0 0 300px;
+      padding: 5px;
+    }
+    #middle {
+      float: left;
+      width: 100%;
+    }
+    #lside {
+      float: left;
+      margin-left: -100%;
+      width: 300px;
+      border-right: solid 1px black;
+    }
+    #js-log {
+      min-height: 300px;
+      max-height: 800px;
+      width: 95%;
+      overflow-y: auto;
+      color: white;
+      background: black;
+      font-family: monospace;
+      line-height: 150%;
+      font-size: 12px;
+      padding: 7px;
+      padding-right: 0px;
+      margin-bottom: 10px;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    #frame {
+      width: 100%;
+      height: 800px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body unresolved>
+
+  <div style="margin: 0 auto 0 auto;">
+    <div id="wrapper">
+      <div id="middle">
+        <div id="content">
+  
+  <p>An example of using <code>&lt;sw-status&gt;</code>:</p>
+
+  <sw-status></sw-status>
+        </div>
+      </div>
+      <div id="lside">
+        <button id="install">Install Service Worker</button>
+        <button id="uninstall">Uninstall Service Worker</button>
+        <div id="log-wrapper">
+          <div>&nbsp;&nbsp;<b>Log</b></div>
+          <div id="js-log"> </div>
+        </div>
+        <p>
+          <ul>
+            <li>A page is not controlled by a ServiceWorker unless it is loaded after the ServiceWorker is registered.
+            <li>Ctrl-Shift-R will force the page to not be controlled by a ServiceWorker, even if one is registered.
+            <li>A page remains controlled by a ServiceWorker even after the worker is uninstalled.
+            <li>ServiceWorker spec is <a href="https://slightlyoff.github.io/ServiceWorker/spec/service_worker/">here</a>.
+          </ul>
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    function log() {
+      var el = document.createElement('div');
+      el.innerHTML = Array.prototype.join.call(
+        Array.prototype.map.call(arguments, function(x) { return "&#62; " + x; }),
+        '<br />');
+      document.getElementById('js-log').appendChild(el);
+    }
+
+     if (navigator.serviceWorker) {
+      document.getElementById('install').addEventListener('click', function() {
+        navigator.serviceWorker.register(
+          'empty-sw.js', { scope: window.location.pathname })
+            .then(function(serviceWorker) {
+              log('Successfully installed ServiceWorker.');
+            }, function(why) {
+              log('Failed to install: ' + why);
+            });
+      });
+
+      document.getElementById('uninstall').addEventListener('click', function() {
+        navigator.serviceWorker.getRegistration(window.location.pathname)
+            .then(function(registration) {
+              if (!registration) {
+                log('No registration controlling page "' + window.location.pathname + '".');
+                return;
+              }
+              registration.unregister()
+                  .then(function(yn) {
+                    log('Unregistration ' + (yn ? 'successful.' : 'unsuccessful.'));
+                  }, function(error) {
+                    log('Error unregistering: ' + error);
+                  });
+            }, function(error) {
+              log("Error getting registration: ", error);
+            });
+      });
+    } else {
+      log("Browser does not support Service Worker, are you using Chrome Canary?  Is the Service Worker flag switched on? chrome://flags/#enable-service-worker");
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "name": "sw-status",
+  "authors": [
+    "Daniel Murphy <dmurph@google.com>"
+  ],
+  "description": "Displays status of ServiceWorkers on the page.",
+  "keywords": [
+    "service-worker",
+    "service-workers",
+    "serviceworker",
+    "serviceworkers"
+  ],
+  "main": "sw-status.html",
+  "license": "MIT",
+  "homepage": "https://github.com/dmurph/sw-status-element/",
+  "ignore": [
+    "/.*",
+    "/tests/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5.1",
+    "core-icons": "Polymer/core-icons#^0.5.1",
+    "paper-fab": "Polymer/paper-fab#^0.5.1",
+    "paper-shadow": "Polymer/paper-shadow#^0.5.1"
+  },
+  "_release": "87808bca62",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "87808bca62e6790ade95eb8f9653a5b6278644e8"
+  },
+  "_source": "git://github.com/dmurph/sw-status.git",
+  "_target": "master",
+  "_originalSource": "dmurph/sw-status",
+  "_direct": true
+}

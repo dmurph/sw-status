@@ -1,0 +1,7 @@
+{
+  "name": "sw-status#gh-pages",
+  "private": true,
+  "dependencies": {
+    "sw-status": "dmurph/sw-status#master"
+  }
+}

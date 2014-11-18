@@ -1,0 +1,82 @@
+#paper-container {
+	padding: 2px;
+}
+
+#container {
+	float: right;
+	width: 100%;
+	font-size: 12px;
+	font-family: "RobotoDraft", Helvetica, Arial, sans-serif;
+}
+
+#title {
+	float: right;
+	width: 40px;
+	height: 40px;
+	font-size: 24px;
+	font-weight: bold;
+	margin: 5px;
+}
+
+#content {
+	margin: 0px;
+	margin-right: 50px;
+}
+
+#refresh-button {
+	margin-bottom: -10px;
+}
+
+.goodText {
+	color: #1B5E20;
+}
+
+.badText {
+	color: #B71C1C;
+}
+
+.tabs {
+	clear: left;
+}
+
+.tab {
+	padding: 5px;
+	margin: 5px;
+	max-width: 250px;
+	float: left;
+	background-color: #00BCD4;
+}
+
+.tab p {
+	padding: 0px 3px 0px 3px;
+	margin: 0px;
+}
+
+.tab h1 {
+	font-size: 14px;
+	margin: 0 0 5px 0;
+	border-bottom: 1px solid;
+	border-color: #000000;
+	padding-left: 5px;
+}
+
+.error {
+	background-color: #E53935;
+	color: #fff;
+}
+
+.error h1 {
+	border-color: #FFEBEE;
+}
+
+.waiting {
+	background-color: #FFEB3B;
+}
+
+.installing {
+	background-color: #FFC107;
+}
+
+.active {
+	background-color: #66BB6A;
+}
