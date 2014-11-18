@@ -1,15 +1,26 @@
-#container {
+#paper-container {
 	padding: 2px;
+}
+
+#container {
+	float: right;
+	width: 100%;
 	font-size: 12px;
-	font-family: "RobotoDraft",Helvetica,Arial,sans-serif;
+	font-family: "RobotoDraft", Helvetica, Arial, sans-serif;
 }
 
 #title {
-	margin: 5px;
+	float: right;
+	width: 40px;
+	height: 40px;
 	font-size: 24px;
 	font-weight: bold;
-	padding-left: 5px;
-	margin-bottom: 10px;
+	margin: 5px;
+}
+
+#content {
+	margin: 0px;
+	margin-right: 50px;
 }
 
 #refresh-button {
@@ -31,15 +42,13 @@
 .tab {
 	padding: 5px;
 	margin: 5px;
-	margin-top: 0px;
 	max-width: 250px;
 	float: left;
 	background-color: #00BCD4;
 }
 
 .tab p {
-	padding: 0px;
-	padding-left: 3px;
+	padding: 0px 3px 0px 3px;
 	margin: 0px;
 }
 
@@ -53,21 +62,21 @@
 
 .error {
 	background-color: #E53935;
-	border-color: #FFEBEE;
 	color: #fff;
 }
 
+.error h1 {
+	border-color: #FFEBEE;
+}
+
 .waiting {
-	background-color: #FFC107;
-	border-color: #FFFFFF;
+	background-color: #FFEB3B;
 }
 
 .installing {
-	background-color: #FFEB3B;
-	border-color: #FFFFFF;
+	background-color: #FFC107;
 }
 
 .active {
 	background-color: #66BB6A;
-	border-color: #FFFFFF;
 }

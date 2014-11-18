@@ -5,77 +5,96 @@
 <!--
 Element that displays the ServiceWorker status for this page.  Currently it displays whether the page is controlled or not, and the registration for the ServiceWorker that can control this page.  In the future this can enumerate the info for all ServiceWorkers under the current domain.
 ##### Example
-    <sw-status-element></sw-status-element>
-@element sw-status-element
+    <sw-status></sw-status>
+@element sw-status
 @blurb Element showing ServiceWorker status.
 @status beta
 @homepage http://dmurph.github.io/sw-status-element
 -->
-<polymer-element name="sw-status-element">
+<polymer-element name="sw-status">
   <template>
-    <link rel="stylesheet" href="sw-status-element.css">
-    <paper-shadow z="1">
+    <link rel="stylesheet" href="sw-status.css">
+    <paper-shadow z="1" id="paper-container">
       <div id="container">
         <div id="title" class="{{titleStyle}}">
           <paper-fab id="refresh-button" icon="refresh" mini on-click="{{refreshClicked}}"></paper-fab>
-          <span>{{controlledText}}</span>
         </div>
-        <template repeat="{{registration in registrations}}">
+        <div id="content">
           <div class="tabs">
-            <paper-shadow class="tab {{registration.registrationClass}}" hidden?="{{registration.registrationText == null}}">
-              <h1>Registration</h1>
-              <template repeat="{{text in registration.registrationText}}">
-                <p>{{text}}</p>
-              </template>
+            <paper-shadow class="tab {{controlledStyle}}" hidden?="{{(controlledText == null)}}">
+                <h1>{{controlledTitle}}</h1>
+                <template repeat="{{text in controlledText}}">
+                  <p>{{text}}</p>
+                </template>
             </paper-shadow>
-            <paper-shadow class="tab installing" hidden?="{{registration.installingText == null}}">
-              <h1>Installing Service Worker</h1>
-              <template repeat="{{text in registration.installingText}}">
-                <p>{{text}}</p>
-              </template>
+            <paper-shadow class="tab {{infoStyle}}" hidden?="{{(infoText == null)}}">
+                <h1>Info</h1>
+                <template repeat="{{text in infoText}}">
+                  <p>{{text}}</p>
+                </template>
             </paper-shadow>
-            <paper-shadow class="tab waiting" hidden?="{{registration.waitingText == null}}">
-              <h1>Waiting Service Worker</h1>
-              <template repeat="{{text in registration.waitingText}}">
-                <p>{{text}}</p>
-              </template>
-            </paper-shadow>
-            <paper-shadow class="tab active" hidden?="{{registration.activeText == null}}">
-              <h1>Active Service Worker</h1>
-              <template repeat="{{text in registration.activeText}}">
-                <p>{{text}}</p>
-              </template>
-            </paper-shadow>
-            <paper-shadow class="tab error" hidden?="{{(registration.errorText == null)}}">
+            <paper-shadow class="tab error" hidden?="{{(errorText == null)}}">
               <h1>Error</h1>
-              <template repeat="{{text in registration.errorText}}">
+              <template repeat="{{text in errorText}}">
                 <p>{{text}}</p>
               </template>
             </paper-shadow>
           </div>
-        </template>
-        <div class="tabs" hidden?="{{(errorText == null)}}">
-          <paper-shadow class="tab error">
-            <h1>Error</h1>
-            <template repeat="{{text in errorText}}">
-              <p>{{text}}</p>
-            </template>
-          </paper-shadow>
+          <template repeat="{{registration in registrations}}">
+            <div class="tabs">
+              <paper-shadow class="tab {{registration.registrationClass}}" hidden?="{{registration.registrationText == null}}">
+                <h1>Registration</h1>
+                <template repeat="{{text in registration.registrationText}}">
+                  <p>{{text}}</p>
+                </template>
+              </paper-shadow>
+              <paper-shadow class="tab installing" hidden?="{{registration.installingText == null}}">
+                <h1>Installing Service Worker</h1>
+                <template repeat="{{text in registration.installingText}}">
+                  <p>{{text}}</p>
+                </template>
+              </paper-shadow>
+              <paper-shadow class="tab waiting" hidden?="{{registration.waitingText == null}}">
+                <h1>Waiting Service Worker</h1>
+                <template repeat="{{text in registration.waitingText}}">
+                  <p>{{text}}</p>
+                </template>
+              </paper-shadow>
+              <paper-shadow class="tab active" hidden?="{{registration.activeText == null}}">
+                <h1>Active Service Worker</h1>
+                <template repeat="{{text in registration.activeText}}">
+                  <p>{{text}}</p>
+                </template>
+              </paper-shadow>
+              <paper-shadow class="tab error" hidden?="{{(registration.errorText == null)}}">
+                <h1>Error</h1>
+                <template repeat="{{text in registration.errorText}}">
+                  <p>{{text}}</p>
+                </template>
+              </paper-shadow>
+            </div>
+          </template>
         </div>
-        <div style="clear: left"></div>
       </div>
+        <div style="clear: right"></div>
     </paper-shadow>
   </template>
   <script>
 
     Polymer({
       titleStyle: 'badText',
-      controlledText: 'Not Controlled',
+
+      controlledStyle: 'installing',
+      controlledTitle: 'Not Controlled',
+      controlledText: ['This page is not controlled by a ServiceWorker.'],
 
       registrations: [],
 
-      onlyErrorText: false,
+      errorTitle: 'Error',
       errorText: null,
+
+      infoText: null,
+      infoStyle: '',
 
       ready: function() {
         this.refreshAll();
@@ -88,16 +107,20 @@ Element that displays the ServiceWorker status for this page.  Currently it disp
       refreshAll: function() {
         this.registrations = [];
         this.errorText = null;
-        this.onlyErrorText = false;
+        this.infoText = null;
+        this.infoStyle = '';
+        this.controlledStyle = 'installing';
+        this.controlledTitle = 'Not Controlled';
+        this.controlledText = ['This page is not controlled by a ServiceWorker.'];
         if (!navigator.serviceWorker) {
           this.errorText = ['Service Workers are not enabled in this browser.'];
-          this.onlyErrorText = true;
           return;
         }
         var controller = navigator.serviceWorker.controller;
         if (controller) {
-          this.controlledText = 'Controlled';
-          this.titleStyle = 'goodText';
+          this.controlledStyle = 'active';
+          this.controlledTitle = 'Controlled';
+          this.controlledText = ['This page is controlled by a ServiceWorker.'];
         }
         var _this = this;
         navigator.serviceWorker.getRegistration(window.location.pathname)
@@ -111,7 +134,8 @@ Element that displays the ServiceWorker status for this page.  Currently it disp
                 registrationClass: null
               };
               if (!registration) {
-                _this.errorText = ['No registration available to control page "' + window.location.pathname + '".'];
+                _this.infoStyle = 'installing';
+                _this.infoText = ['No registration available to control page "' + window.location.pathname + '".'];
                 // We are still controlled, but the SW is unregistered.
                 if (controller) {
                   registrationObject.registrationText = ['No registration, but this page is still controlled.'];
