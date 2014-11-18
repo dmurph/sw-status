@@ -160,7 +160,6 @@ Element that displays the ServiceWorker status for this page.  Currently it disp
               _this.registrations.push(registrationObject);
             }, function(why) {
                 _this.errorText = ['Error getting registration for path "' + window.location.pathname + '": ' + why];
-                _this.onlyErrorText = false;
             });
       },
 
