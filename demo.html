@@ -8,12 +8,19 @@
 <body unresolved>
   <button id="install">Install Service Worker</button>
   <button id="uninstall">Uninstall Service Worker</button>
-
+  <p>
+    <ul>
+      <li>A page is not controlled by a ServiceWorker unless it is loaded after the ServiceWorker is registered.
+      <li>Ctrl-Shift-R will force the page to not be controlled by a ServiceWorker, even if one is registered.
+      <li>A page remains controlled by a ServiceWorker even after the worker is uninstalled.
+      <li>ServiceWorker spec is <a href="https://slightlyoff.github.io/ServiceWorker/spec/service_worker/">here</a>.
+    </ul>
+  </p>
   <p>An example of using <code>&lt;sw-status-element&gt;</code>:</p>
 
   <sw-status-element></sw-status-element>
 
-  <p>Note: Ctrl-Shift-R will force the page to not be controlled by a serviceworker, even if one is registered.</p>
+
   <script>
      if (navigator.serviceWorker) {
       document.getElementById('install').addEventListener('click', function() {
