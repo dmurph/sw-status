@@ -1,27 +1,52 @@
-<!--
-    @license
-    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
-    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-    Code distributed by Google as part of the polymer project is also
-    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <!doctype html>
 <html>
 <head>
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>sw-status-element Demo</title>
-  <link rel="import" href="../polymer/polymer.html">
   <link rel="import" href="sw-status-element.html">
 </head>
 <body unresolved>
+  <button id="install">Install Service Worker</button>
+  <button id="uninstall">Uninstall Service Worker</button>
 
   <p>An example of using <code>&lt;sw-status-element&gt;</code>:</p>
 
-  <sw-status-element>
-    <h2>Hello seed-element</h2>
-  </sw-status-element>
+  <sw-status-element></sw-status-element>
+
+  <p>Note: Ctrl-Shift-R will force the page to not be controlled by a serviceworker, even if one is registered.</p>
+  <script>
+     if (navigator.serviceWorker) {
+      document.getElementById('install').addEventListener('click', function() {
+        navigator.serviceWorker.register(
+          'empty-sw.js', { scope: window.location.pathname })
+            .then(function(serviceWorker) {
+              console.log('Successfully installed ServiceWorker');
+            }, function(why) {
+              console.log('Failed to install:' + why);
+            });
+      });
+
+      document.getElementById('uninstall').addEventListener('click', function() {
+        navigator.serviceWorker.getRegistration(window.location.pathname)
+            .then(function(registration) {
+              if (!registration) {
+                console.log('No registration controlling page "' + window.location.pathname + '".');
+                return;
+              }
+              registration.unregister()
+                  .then(function(yn) {
+                    console.log('Registration successfull: ' + yn);
+                  }, function(error) {
+                    console.log('Error unregistering: ' + error);
+                  });
+            }, function(error) {
+              console.log("Error getting registration: ", error);
+            });
+      });
+    } else {
+      console.log("Browser does not support Service Worker, are you using Chrome Canary?  Is the Service Worker flag switched on? chrome://flags/#enable-service-worker");
+    }
+  </script>
 
 </body>
 </html>

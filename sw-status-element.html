@@ -2,6 +2,15 @@
 <link href="../core-icons/core-icons.html" rel="import">
 <link href="../paper-shadow/paper-shadow.html" rel="import">
 
+<!--
+Element that displays the serviceworker status for this page.  Currently it displays whether the page is controlled or not, and the registration for the serviceworker that can control this page.  In the future this can enumerate the info for all serviceworkers under the current domain.
+##### Example
+    <sw-status-element></sw-status-element>
+@element sw-status-element
+@blurb Element showing serviceworker status.
+@status beta
+@homepage http://dmurph.github.io/sw-status-element
+-->
 <polymer-element name="sw-status-element">
   <template>
     <link rel="stylesheet" href="sw-status-element.css">
@@ -13,32 +22,44 @@
         </div>
         <template repeat="{{registration in registrations}}">
           <div class="tabs">
-            <paper-shadow class="tab">
+            <paper-shadow class="tab {{registration.registrationClass}}" hidden?="{{registration.registrationText == null}}">
               <h1>Registration</h1>
-              <p>{{registration.registrationText}}</p>
+              <template repeat="{{text in registration.registrationText}}">
+                <p>{{text}}</p>
+              </template>
             </paper-shadow>
             <paper-shadow class="tab installing" hidden?="{{registration.installingText == null}}">
               <h1>Installing Service Worker</h1>
-              <p>{{registration.installingText}}</p>
+              <template repeat="{{text in registration.installingText}}">
+                <p>{{text}}</p>
+              </template>
             </paper-shadow>
             <paper-shadow class="tab waiting" hidden?="{{registration.waitingText == null}}">
               <h1>Waiting Service Worker</h1>
-              <p>{{registration.waitingText}}</p>
+              <template repeat="{{text in registration.waitingText}}">
+                <p>{{text}}</p>
+              </template>
             </paper-shadow>
             <paper-shadow class="tab active" hidden?="{{registration.activeText == null}}">
               <h1>Active Service Worker</h1>
-              <p>{{registration.activeText}}</p>
+              <template repeat="{{text in registration.activeText}}">
+                <p>{{text}}</p>
+              </template>
             </paper-shadow>
             <paper-shadow class="tab error" hidden?="{{(registration.errorText == null)}}">
               <h1>Error</h1>
-              <p>{{registration.errorText}}</p>
+              <template repeat="{{text in registration.errorText}}">
+                <p>{{text}}</p>
+              </template>
             </paper-shadow>
           </div>
         </template>
         <div class="tabs" hidden?="{{(errorText == null)}}">
           <paper-shadow class="tab error">
             <h1>Error</h1>
-            <p>{{errorText}}</p>
+            <template repeat="{{text in errorText}}">
+              <p>{{text}}</p>
+            </template>
           </paper-shadow>
         </div>
         <div style="clear: left"></div>
@@ -61,7 +82,7 @@
       },
 
       getServiceWorkerDescription: function(worker) {
-        return "script: " + worker.scriptURL + "\nstate: " + worker.state;
+        return ['Script: ' + worker.scriptURL, 'State: ' + worker.state];
       },
 
       refreshAll: function() {
@@ -69,44 +90,52 @@
         this.errorText = null;
         this.onlyErrorText = false;
         if (!navigator.serviceWorker) {
-          this.errorText = 'Service Workers are not enabled in this browser.';
+          this.errorText = ['Service Workers are not enabled in this browser.'];
           this.onlyErrorText = true;
           return;
         }
-        if (navigator.serviceWorker.controller) {
-          this.controlledText = "Controlled";
+        var controller = navigator.serviceWorker.controller;
+        if (controller) {
+          this.controlledText = 'Controlled';
           this.titleStyle = 'goodText';
         }
         var _this = this;
         navigator.serviceWorker.getRegistration(window.location.pathname)
             .then(function(registration) {
-              if (!registration) {
-                _this.errorText = 'No registration controlling page "' + window.location.pathname + '".';
-                _this.onlyErrorText = true;
-                return;
-              }
               var registrationObject = {
                 registrationText: null,
                 installingText: null,
                 waitingText: null,
                 activeText: null,
                 errorText: null,
+                registrationClass: null
               };
-              registrationObject.registrationText = "Scope: " + registration.scope;
+              if (!registration) {
+                _this.errorText = ['No registration available to control page "' + window.location.pathname + '".'];
+                // We are still controlled, but the SW is unregistered.
+                if (controller) {
+                  registrationObject.registrationText = ['No registration, but this page is still controlled.'];
+                  registrationObject.registrationClass = 'error';
+                  registrationObject.activeText = _this.getServiceWorkerDescription(controller);
+                }
+                _this.registrations.push(registrationObject);
+                return;
+              }
+              registrationObject.registrationText = ['Scope: ' + registration.scope];
 
               var worker = null;
-              if (registration.waiting) {
-                registrationObject.waitingText = _this.getServiceWorkerDescription(registration.waiting);
-              } else if (registration.installing) {
+              if (registration.installing) {
                 registrationObject.installingText = _this.getServiceWorkerDescription(registration.installing);
+              } else if (registration.waiting) {
+                registrationObject.waitingText = _this.getServiceWorkerDescription(registration.waiting);
               } else if (registration.active) {
                 registrationObject.activeText = _this.getServiceWorkerDescription(registration.active);
               } else {
-                registrationObject.errorText = 'No registration found.';
+                registrationObject.errorText = ['No registration found.'];
               }
               _this.registrations.push(registrationObject);
             }, function(why) {
-                _this.errorText = 'Error getting registration for path "' + window.location.pathname + '": ' + why;
+                _this.errorText = ['Error getting registration for path "' + window.location.pathname + '": ' + why];
                 _this.onlyErrorText = false;
             });
       },
@@ -115,6 +144,5 @@
         this.refreshAll();
       }
     });
-
   </script>
 </polymer-element>
