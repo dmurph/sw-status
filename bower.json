@@ -19,9 +19,9 @@
     "/tests/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.1",
-    "core-icons": "Polymer/core-icons#^0.5.1",
-    "paper-fab": "Polymer/paper-fab#^0.5.1",
-    "paper-shadow": "Polymer/paper-shadow#^0.5.1"
+    "polymer": "Polymer/polymer",
+    "core-icons": "Polymer/core-icons",
+    "paper-fab": "Polymer/paper-fab",
+    "paper-shadow": "Polymer/paper-shadow"
   }
 }
