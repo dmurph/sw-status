@@ -9,3 +9,13 @@ This is a polymer element that displays the current status of ServiceWorker cont
 
 Documentation/demo:<br>
 https://dmurph.github.io/sw-status/components/sw-status/
+
+## Examples
+Uncontrolled, no SW:
+![](https://github.com/dmurph/sw-status/blob/master/imgs/1.png)
+Uncontrolled, with SW:
+![](https://github.com/dmurph/sw-status/blob/master/imgs/2.png)
+Controlled, with SW:
+![](https://github.com/dmurph/sw-status/blob/master/imgs/3.png)
+Controlled, no SW registration anymore:
+![](https://github.com/dmurph/sw-status/blob/master/imgs/4.png)
