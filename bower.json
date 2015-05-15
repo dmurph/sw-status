@@ -9,7 +9,8 @@
     "service-worker",
     "service-workers",
     "serviceworker",
-    "serviceworkers"
+    "serviceworkers",
+    "web-components"
   ],
   "main": "sw-status.html",
   "license": "MIT",
